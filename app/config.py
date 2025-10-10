@@ -2,7 +2,6 @@ AMOUNT_OF_FREE_IMAGES = 3
 COST_PER_REGULAR_GENERATION = 1
 COST_PER_CUSTOM_GENERATION = 2
 SUPPORT_EMAIL = "email.email@email"
-ADMIN_ID = 2111764465
 UNLOCK_IMAGE = "Unlock her for"
 GENERATION_TIME = "Your waifu is coming, usually takes 20 sec ⏳"
 PICTURE_REQUEST_ERROR = "🚨 AI Server Down! Please try your request again"
@@ -21,7 +20,6 @@ CONTENT_OPTIONS = list(CATEGORIES.keys())
 IMAGE_CAPTION = "✨ Here she is ✨"
 PICUTRE_IS_ALREADY_GENERATING = "⚠️ Artist at Work! We are already busy painting your masterpiece. Please wait for the final render before placing a new order."
 OHTER_CATEGORY = f"I can only generate images for the {len(CONTENT_OPTIONS)} categories below. Please select a button."
-TELEGRAM_BOT_API = "8215685913:AAFXu4MNnKKFMpSkHCgxRzfJPc6url2o83U"
 EXCLUDE = "child, nsfw, naked, boring, dull expression, lowres, jpeg artifacts, blurry, bad art, red oversaturation, bad color, monochromatic red, gross, blurry background, out of focus, hazy, low detail, low quality, watermark, text, out of frame"
 GO_TO_REFUND = (
     "❌ Sadly we couldn't resolve it automatically. Please go to <b>/refund</b>"
@@ -145,4 +143,3 @@ Your full Telegram user ID(execute <b>/myid</b>).
 A detailed Message explaining the technical issue.
 
 The Proof of Purchase (Payment Receipt/Screenshot)."""
-# $env:REPLICATE_API_TOKEN="r8_MYUlcnBDfRbAHFYXOA5f0aWixSujw9K4Q7h7N"

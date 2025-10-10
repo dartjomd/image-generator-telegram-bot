@@ -1,4 +1,5 @@
 import asyncio
+import os
 from aiogram.filters import Command
 from aiogram.exceptions import TelegramAPIError
 from aiogram.types import (
@@ -8,12 +9,12 @@ from aiogram.types import (
     LabeledPrice,
     PreCheckoutQuery,
 )
+from dotenv import load_dotenv
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram import F, Bot, Router
 from app import functions
 from app.config import (
-    ADMIN_ID,
     AMOUNT_OF_FREE_IMAGES,
     CATEGORIES,
     CONTENT_OPTIONS,
@@ -40,6 +41,8 @@ import app.keyboard as kb
 from app.UsersController import UsersController
 from app.GenerationsController import GenerationsController
 
+load_dotenv()
+ADMIN_ID = int(os.environ.get("ADMIN_ID"))
 TEMP_GENERATION = {}
 
 
@@ -222,7 +225,6 @@ async def handle_help(message: Message):
 async def handle_admin_users(message: Message):
     if message.from_user.id != ADMIN_ID:
         return
-
     users = UsersController.get_all_extended_users()
 
     if not users:

@@ -1,7 +1,7 @@
 AMOUNT_OF_FREE_IMAGES = 3
-COST_PER_REGULAR_GENERATION = 1
-COST_PER_CUSTOM_GENERATION = 2
-SUPPORT_EMAIL = "email.email@email"
+COST_PER_REGULAR_GENERATION = 3
+COST_PER_CUSTOM_GENERATION = 5
+SUPPORT_EMAIL = "pixelsin.bot@gmail.com"
 UNLOCK_IMAGE = "Unlock her for"
 GENERATION_TIME = "Your waifu is coming, usually takes 20 sec ⏳"
 PICTURE_REQUEST_ERROR = "🚨 AI Server Down! Please try your request again"
@@ -47,9 +47,20 @@ Your mission is to secure the <b>access key</b> to one of our {len(CONTENT_OPTIO
 
 Hit one of the buttons below to <b>instantly generate</b> your first 8K masterpiece!
 Psss... <i>only one girl can be pending🤫</i>
+
+<br>
+<b>⚔️ Guild Master's Warning:</b>
+The Forge is powerful, but even it has limits. **Overly aggressive or explicit commands** are catched by default. Keep your requests focused and creative!
+<br>
+
 As a gift we give <b>YOU</b> {AMOUNT_OF_FREE_IMAGES} trial attempts!
-We try to keep the freedom, so next ones will only be
-<b>{COST_PER_REGULAR_GENERATION}⭐ PER GIRL!!!</>
+
+<br>
+<b>The Price List (After Trial Attempts):</b>
+<ul>
+    <li><b>Standard Categories:</b> Only <b>{COST_PER_REGULAR_GENERATION}⭐</b> per girl!</li>
+    <li><b>{CUSTOM_PROMPT_TITLE}:</b> Full creative freedom costs <b>{COST_PER_CUSTOM_GENERATION}⭐</b> per girl!</li>
+</ul>
 """
 
 
@@ -105,7 +116,7 @@ Time: The approximate time (and date) the issue occurred.
 Artifact ID (If applicable): If you still have the message with the receipt.
 
 ⏳ Support Response Time
-The Guild Master is often busy, but we aim to respond to all critical quests within 24 hours. Please do not spam the channel; multiple messages will only reset your place in the queue.
+The Guild Master is often busy, but we will try to respond ASAP. Please do not spam the channel; multiple messages will only reset your place in the queue.
 
 We appreciate your patience as we maintain the Artifact Forge!"""
 PRIVACY_POLICY_MESSAGE = f"""

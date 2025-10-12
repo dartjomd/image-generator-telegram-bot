@@ -1,11 +1,11 @@
+from dotenv import load_dotenv
+
+load_dotenv()
 import asyncio
 import os
 from aiogram import Bot, Dispatcher
 from app.database.DB import setup_database, db
 from app.handlers import router
-from dotenv import load_dotenv
-
-load_dotenv()
 
 TELEGRAM_BOT_API = os.environ.get("TELEGRAM_BOT_API")
 bot = Bot(token=TELEGRAM_BOT_API)

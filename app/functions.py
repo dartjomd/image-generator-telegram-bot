@@ -1,6 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 import replicate
 import os
+import logging
 from app.config import (
     AMOUNT_OF_FREE_IMAGES,
     COST_PER_REGULAR_GENERATION,
@@ -8,11 +9,26 @@ from app.config import (
     IMAGE_CAPTION,
 )
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 REPLICATE_CLIENT = replicate.Client(api_token=os.getenv("REPLICATE_API_TOKEN"))
+
+# Настраиваем логирование, чтобы оно точно попало в journalctl
+logging.basicConfig(level=logging.ERROR)
 
 
 def generate_image_url(prompt: str) -> str | None:
+    # 1. ОТЛАДКА: Проверяем, что ключ Replicate не None
+    if not os.getenv("REPLICATE_API_TOKEN"):
+        logging.error("REPLICATE_API_TOKEN is missing!")
+        return None
+
     try:
+        # 2. ОТЛАДКА: Сообщаем, что вызов пошел
+        logging.error(f"Calling Replicate with prompt: {prompt}")
+
         output = REPLICATE_CLIENT.run(
             "aisha-ai-official/miaomiao-harem-illustrious-v1:d74eab7842eca403256b37c4276e0c19b83aa124cc5d102d15d9327a6d14ad02",
             input={
@@ -25,12 +41,24 @@ def generate_image_url(prompt: str) -> str | None:
             },
         )
 
+        # 3. ОТЛАДКА: Печатаем весь ответ, чтобы увидеть его структуру
+        logging.error(f"Replicate RAW Output received: {output}")
+
         if output and len(output) > 0:
-            return output[0].url
+            # Проверяем, что output[0] - это объект с атрибутом .url
+            # Если output — это просто список строк (URL), то код ниже не сработает
+            if hasattr(output[0], "url"):
+                return output[0].url
+            else:
+                # Если это просто список строк-URL:
+                return output[0]
 
     except Exception as e:
-        print(f"Error in generate_image_url: {e}")
+        # 4. ЛОГИРОВАНИЕ: Печатаем полную трассировку ошибки
+        logging.error(f"CRITICAL ERROR in generate_image_url: {e}", exc_info=True)
         return None
+
+    return None  # Возвращаем None, если что-то пошло не так
 
 
 def create_keyboard_from_list(items: list[str]) -> ReplyKeyboardMarkup:

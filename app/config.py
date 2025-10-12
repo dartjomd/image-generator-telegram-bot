@@ -48,14 +48,11 @@ Your mission is to secure the <b>access key</b> to one of our {len(CONTENT_OPTIO
 Hit one of the buttons below to <b>instantly generate</b> your first 8K masterpiece!
 Psss... <i>only one girl can be pending🤫</i>
 
-<br>
 <b>⚔️ Guild Master's Warning:</b>
 The Forge is powerful, but even it has limits. **Overly aggressive or explicit commands** are catched by default. Keep your requests focused and creative!
-<br>
 
 As a gift we give <b>YOU</b> {AMOUNT_OF_FREE_IMAGES} trial attempts!
 
-<br>
 <b>The Price List (After Trial Attempts):</b>
 <ul>
     <li><b>Standard Categories:</b> Only <b>{COST_PER_REGULAR_GENERATION}⭐</b> per girl!</li>

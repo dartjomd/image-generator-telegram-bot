@@ -42,7 +42,7 @@ class UsersController:
             GROUP BY
                 u.user_id
             ORDER BY
-                u.total DESC;"""
+                total DESC;"""
         return db.read(sql_str)
 
     @staticmethod

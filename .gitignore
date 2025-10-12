@@ -1,4 +1,4 @@
 /.env
-/app/__pycache__/
-/app/database/__pycache__
 *.pyc
+__pycache__/
+DB.sql

@@ -8,12 +8,20 @@ class GenerationsController:
         return db.read(sql_str)
 
     @staticmethod
-    def get_generation(user_id: int) -> list[any]:
+    def get_generation_by_user_id(user_id: int) -> list[any]:
         sql_str = """SELECT * FROM generations WHERE user_id = ? AND is_resolved = 0"""
         res = db.read(sql_str, (user_id,))
         if res:
             return res[0]
         return False
+
+    # @staticmethod
+    # def get_generation_by_id(id: int) -> list[any]:
+    #     sql_str = """SELECT * FROM generations WHERE id = ?"""
+    #     res = db.read(sql_str, (id,))
+    #     if res:
+    #         return res[0]
+    #     return False
 
     @staticmethod
     def create_generation(user_id: int, image_url: str, prompt: str) -> bool:

@@ -18,8 +18,6 @@ from app.config import (
     AMOUNT_OF_FREE_IMAGES,
     CATEGORIES,
     CONTENT_OPTIONS,
-    COST_PER_CUSTOM_GENERATION,
-    COST_PER_REGULAR_GENERATION,
     CUSTOM_PROMPT_TITLE,
     GENERATION_TIME,
     GO_TO_REFUND,
@@ -36,7 +34,7 @@ from app.config import (
     IMAGE_CAPTION,
     PICUTRE_IS_ALREADY_GENERATING,
 )
-from app.functions import generate_image_url
+from app.functions import calculate_price, generate_image_url
 import app.keyboard as kb
 from app.UsersController import UsersController
 from app.GenerationsController import GenerationsController
@@ -60,9 +58,14 @@ async def send_unlocked_image(
 
 # FUNCTION: offer to pay to unlock image
 async def offer_to_pay(message: Message, u_id: int):
+    keyboard = kb.pay_for_generation(u_id)
+    # if not keyboard:
+    #     await message.answer(text=PICTURE_REQUEST_ERROR)
+    #     return
+
     await message.answer(
         text="<i>She is ready...</i>",
-        reply_markup=kb.pay_for_generation(u_id),
+        reply_markup=keyboard,
         parse_mode="html",
     )
 
@@ -307,10 +310,7 @@ async def handle_pay_button_callback(callback_query: CallbackQuery, bot: Bot):
     await callback_query.answer()
 
     u_id: int = callback_query.from_user.id
-    generation: list[any] = GenerationsController.get_generation(u_id)
-
-    # resolve pending generation
-    GenerationsController.resolve_generation(u_id)
+    generation: list[any] = GenerationsController.get_generation_by_user_id(u_id)
 
     # check if there is pending generation for user
     if not generation:
@@ -319,15 +319,14 @@ async def handle_pay_button_callback(callback_query: CallbackQuery, bot: Bot):
         )
         return
 
+    # generation ID
     uniq_id: str = str(generation[0])
 
     TEMP_GENERATION[uniq_id] = generation
     category: str = generation[3]
 
     # calculate price
-    price = COST_PER_REGULAR_GENERATION
-    if category == CUSTOM_PROMPT_TITLE:
-        price = COST_PER_CUSTOM_GENERATION
+    price = calculate_price(category)
 
     # remove PAY button after it is clicked
     await bot.edit_message_reply_markup(

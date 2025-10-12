@@ -4,7 +4,9 @@ import os
 import logging
 from app.config import (
     AMOUNT_OF_FREE_IMAGES,
+    COST_PER_CUSTOM_GENERATION,
     COST_PER_REGULAR_GENERATION,
+    CUSTOM_PROMPT_TITLE,
     EXCLUDE,
     IMAGE_CAPTION,
 )
@@ -85,7 +87,7 @@ async def generate_image():
 def get_trial_image_caption(total: int) -> str:
     remaining = AMOUNT_OF_FREE_IMAGES - total
     if remaining == 0:
-        return f"{IMAGE_CAPTION}\nIt was your last trial waifu. Next one is {COST_PER_REGULAR_GENERATION}⭐"
+        return f"{IMAGE_CAPTION}\nIt was your last trial waifu."
     else:
         return f"{IMAGE_CAPTION}\nYou have {remaining}🔥 trials left"
 
@@ -116,3 +118,11 @@ def create_users_table(users: list[any]) -> str:
     return final_report
     # Отправляем отчет в чат, используя MarkdownV2 для моноширинного текста
     # и избегая превышения лимита на длину сообщения (4096 символов).
+
+
+# FUNCTION: calculate price for image
+def calculate_price(category: str) -> int:
+    price = COST_PER_REGULAR_GENERATION
+    if category == CUSTOM_PROMPT_TITLE:
+        price = COST_PER_CUSTOM_GENERATION
+    return price

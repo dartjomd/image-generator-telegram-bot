@@ -99,8 +99,7 @@ def setup_database():
                 user_id INTEGER PRIMARY KEY,
                 join_date TIMESTAMP,
                 is_generating INTEGER DEFAULT 0,
-                is_last_image_unlocked INTEGER DEFAULT 1,
-                total INTEGER DEFAULT 0
+                is_last_image_unlocked INTEGER DEFAULT 1
             );
             CREATE TABLE IF NOT EXISTS generations (
                 id INTEGER PRIMARY KEY,

@@ -54,10 +54,8 @@ The Forge is powerful, but even it has limits. **Overly aggressive or explicit c
 As a gift we give <b>YOU</b> {AMOUNT_OF_FREE_IMAGES} trial attempts!
 
 <b>The Price List (After Trial Attempts):</b>
-<ul>
-    <li><b>Standard Categories:</b> Only <b>{COST_PER_REGULAR_GENERATION}⭐</b> per girl!</li>
-    <li><b>{CUSTOM_PROMPT_TITLE}:</b> Full creative freedom costs <b>{COST_PER_CUSTOM_GENERATION}⭐</b> per girl!</li>
-</ul>
+<b>Standard Categories:</b> Only <b>{COST_PER_REGULAR_GENERATION}⭐</b> per girl!
+<b>{CUSTOM_PROMPT_TITLE}:</b> Full creative freedom costs <b>{COST_PER_CUSTOM_GENERATION}⭐</b> per girl!
 """
 
 

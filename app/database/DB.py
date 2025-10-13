@@ -98,14 +98,13 @@ def setup_database():
             CREATE TABLE IF NOT EXISTS users (
                 user_id INTEGER PRIMARY KEY,
                 join_date TIMESTAMP,
-                is_generating INTEGER DEFAULT 0,
-                is_last_image_unlocked INTEGER DEFAULT 1
+                is_generating INTEGER DEFAULT 0
             );
             CREATE TABLE IF NOT EXISTS generations (
                 id INTEGER PRIMARY KEY,
                 user_id INTEGER,
                 image_url TEXT,
-                prompt TEXT,
+                category TEXT,
                 is_resolved INTEGER
             );
             """

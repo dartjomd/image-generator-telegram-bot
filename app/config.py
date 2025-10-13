@@ -1,7 +1,13 @@
-AMOUNT_OF_FREE_IMAGES = 3
-COST_PER_REGULAR_GENERATION = 3
-COST_PER_CUSTOM_GENERATION = 5
-SUPPORT_EMAIL = "pixelsin.bot@gmail.com"
+import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+AMOUNT_OF_FREE_IMAGES = int(os.getenv("AMOUNT_OF_FREE_IMAGES"))
+COST_PER_CUSTOM_GENERATION = os.getenv("COST_PER_CUSTOM_GENERATION")
+COST_PER_REGULAR_GENERATION = os.getenv("COST_PER_REGULAR_GENERATION")
+SUPPORT_EMAIL = os.getenv("SUPPORT_EMAIL")
+
 UNLOCK_IMAGE = "Unlock her"
 GENERATION_TIME = "Your waifu is coming, usually takes 20 sec ⏳"
 PICTURE_REQUEST_ERROR = "🚨 AI Server Down! Please try your request again"
@@ -10,10 +16,10 @@ TYPE_CUSTOM_CATEGORY = "🤫 We will not tell anybody. Type your preferences bel
 PREVIOUS_PICTURE_IS_LOCKED = "Looks like you have a ready image waiting for you! Just a quick reminder: please finalize the previous generation before starting a new one. 😉"
 CUSTOM_PROMPT_TITLE = "✨ COMPLETE FREEDOM"
 CATEGORIES = {
-    "💦 WET SKIN": "adult, masterpiece, highly detailed, 1girl, young woman, full body in shot, (hip thrust on sand | legs slightly parted | wet kneeling pose | leaning back on hands | sitting cross-legged | seductive beach pose), (blonde hair | light blue hair | pink hair), transparent clothing, expressive face, looking at viewer, perfect anatomy, micro thong, micro bikini, soaking wet body, deep cleavage, sunlight shimmering on body, sharp focus, 8k, beach, sitting",
-    "🖤 LATEX PLAY": "adult, masterpiece, ultra-detailed, 1girl, full body in shot, (hips thrust up | arching back | leg spread | leaning forward on knees | looking over shoulder | hands on chest), (red hair | black hair | white hair), random color shiny wet latex bunny suit, extreme low cut, zipper open, thigh-high fishnets, garter belt, extreme high-cut, maximum cleavage, oiled skin, large bust, playful expression, dramatic backlighting, 8k",
-    "🦵 THIGH-HIGH": "masterpiece, ultra-detailed, sharp focus, clean lines, 1girl, full body shot, (reclining on back | sitting on edge of bed | legs up on bed | leg spread on sheets | sensual pose on stomach | seductive sitting pose), stockings, (blonde hair | black hair | purple hair | brown hair), garter belt, above average bust, legs slightly bent, shy gaze at viewer, intricate facial details, gentle expressive face, intimate lighting, soft shadow, luxury bedroom, 8k",
-    "🛁 BATHROOM INTIMACY": "adult, masterpiece, ultra-detailed, 1girl, full body shot, (leaning on sink | sitting on edge of tub | wet kneeling pose in shower | looking over shoulder in mirror | wet hair forward), (white towel | sheer silk robe | wet t-shirt), transparent fabric, soaking wet skin, steamy atmosphere, soft focus, full body mirror reflection, luxury bathroom, intimate lighting, sharp focus, 8k",
+    "💦 WET SKIN": "adult, masterpiece, photorealistic, highly detailed, ultra-realistic skin texture, natural sunlight, sharp focus, 1girl, young woman, full body in shot, facing viewer, eye contact, (hips thrust up legs wide on sand | legs parted exposing pussy | wet kneeling ass up | leaning back hands spreading thighs | sitting cross-legged fingering self | seductive beach pose bent over), (blonde | light blue | pink) hair wet and tousled, nude with torn transparent clothing, expressive aroused face flushed, looking at viewer seductively, perfect natural anatomy, micro thong pulled aside, micro bikini top off, soaking wet body with water droplets, exposed breasts nipples erect, deep cleavage, sunlight shimmering on oiled skin, 8k, beach setting, lifelike proportions",
+    "🖤 LATEX PLAY": "adult, masterpiece, photorealistic, ultra-detailed, realistic skin, natural lighting, 1girl, full body, facing viewer, eye contact, (hips thrust up legs spread | arching back | legs apart on bed | leaning forward knees ass up | looking over shoulder | hands on bare breasts), random hair color flowing, nude in torn wet latex bunny suit, fabric ripped open, zipper unzipped exposing all, torn fishnets, loose garter, revealing labia, nipples visible, oiled sweaty skin, large natural bust, aroused expression, dramatic backlighting, soft shadows, 8k, lifelike proportions",
+    "🦵 THIGH-HIGH": "masterpiece, photorealistic, ultra-detailed, realistic skin, natural lighting, sharp focus, clean lines, 1girl, full body shot, facing viewer, eye contact, (reclining on back legs spread | sitting on bed edge knees apart | legs up spread on bed | wide leg spread on sheets | prone on stomach ass up | seductive sitting with open legs), thigh-high stockings, (blonde | black | purple | brown) hair flowing naturally, garter belt loose, nude with exposed breasts and pussy, above average natural bust with sag, legs bent aroused, shy aroused gaze, intricate natural face, gentle flushed expression, intimate lighting, soft shadows, luxury bedroom, 8k, lifelike proportions",
+    "🛁 BATHROOM INTIMACY": "adult, masterpiece, ultra-detailed, 1girl, full body shot, facing viewer, eye contact, (leaning forward on sink | sitting on edge of tub with legs spread | wet kneeling pose in shower | bending over in mirror | wet hair draped forward), (no clothing | nude | bare breasts | exposed pussy), transparent water droplets on skin, soaking wet body, steamy atmosphere, soft focus, full body mirror reflection showing front view, luxury bathroom, intimate lighting, sharp focus, 8k",
     CUSTOM_PROMPT_TITLE: "",
 }
 CONTENT_OPTIONS = list(CATEGORIES.keys())
@@ -86,6 +92,9 @@ Support Scroll: For payment issues, technical glitches, or support, contact the 
 SUPPORT_MESSAGE = f"""
 📜 The Guild Support Scroll
 Greetings, Whisperer! If your quest has encountered a digital anomaly, the Guild is here to assist.
+
+👑 You have an idea?
+Send to us({SUPPORT_EMAIL}) your idea to support community of freedom seekers!
 
 🆘 When to Seek Help
 Before contacting us, please check the following:

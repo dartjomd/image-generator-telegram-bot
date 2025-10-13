@@ -3,9 +3,6 @@ import replicate
 import os
 import logging
 from app.config import (
-    AMOUNT_OF_FREE_IMAGES,
-    COST_PER_CUSTOM_GENERATION,
-    COST_PER_REGULAR_GENERATION,
     CUSTOM_PROMPT_TITLE,
     EXCLUDE,
     IMAGE_CAPTION,
@@ -14,7 +11,9 @@ from app.config import (
 from dotenv import load_dotenv
 
 load_dotenv()
-
+AMOUNT_OF_FREE_IMAGES = int(os.getenv("AMOUNT_OF_FREE_IMAGES"))
+COST_PER_CUSTOM_GENERATION = os.getenv("COST_PER_CUSTOM_GENERATION")
+COST_PER_REGULAR_GENERATION = os.getenv("COST_PER_REGULAR_GENERATION")
 REPLICATE_CLIENT = replicate.Client(api_token=os.getenv("REPLICATE_API_TOKEN"))
 
 # Настраиваем логирование, чтобы оно точно попало в journalctl

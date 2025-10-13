@@ -15,7 +15,6 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram import F, Bot, Router
 from app import functions
 from app.config import (
-    AMOUNT_OF_FREE_IMAGES,
     CATEGORIES,
     CONTENT_OPTIONS,
     CUSTOM_PROMPT_TITLE,
@@ -40,6 +39,7 @@ from app.UsersController import UsersController
 from app.GenerationsController import GenerationsController
 
 load_dotenv()
+AMOUNT_OF_FREE_IMAGES = int(os.getenv("AMOUNT_OF_FREE_IMAGES"))
 ADMIN_ID = int(os.environ.get("ADMIN_ID"))
 TEMP_GENERATION = {}
 

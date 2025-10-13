@@ -24,10 +24,10 @@ class GenerationsController:
     #     return False
 
     @staticmethod
-    def create_generation(user_id: int, image_url: str, prompt: str) -> bool:
-        data: tuple[any, ...] = (user_id, image_url, prompt, 0)
+    def create_generation(user_id: int, image_url: str, category: str) -> bool:
+        data: tuple[any, ...] = (user_id, image_url, category, 0)
         sql_str: str = """
-        INSERT INTO generations (user_id, image_url, prompt, is_resolved) 
+        INSERT INTO generations (user_id, image_url, category, is_resolved) 
         VALUES (?, ?, ?, ?)
         """
         return db.create(sql_str, data)

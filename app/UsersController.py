@@ -29,12 +29,7 @@ class UsersController:
             u.user_id,
             u.is_generating,
             COUNT(g.user_id) AS total,
-            -- Используем SUM(CASE ...) для подсчета всех ЗАБЛОКИРОВАННЫХ генераций (is_resolved = 0)
-            -- Если сумма равна 0, значит, нет заблокированных генераций.
-            CASE 
-                WHEN SUM(CASE WHEN g.is_resolved = 0 THEN 1 ELSE 0 END) = 0 THEN 1
-                ELSE 0
-            END AS all_generations_resolved
+            IFNULL(MIN(g.is_resolved), 1) AS all_generations_resolved
             FROM
                 users u
             LEFT JOIN

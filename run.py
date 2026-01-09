@@ -20,7 +20,7 @@ async def main():
     if not db:
         print("database service is unavailable")
         return False
-    dp.workflow_data["db"] = db  # нужна ли эта хуйня
+    dp.workflow_data["db"] = db
 
     await dp.start_polling(bot)
 

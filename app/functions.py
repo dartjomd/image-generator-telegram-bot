@@ -4,7 +4,6 @@ import os
 import logging
 from app.config import (
     CUSTOM_PROMPT_TITLE,
-    EXCLUDE,
     IMAGE_CAPTION,
 )
 
@@ -16,50 +15,46 @@ COST_PER_CUSTOM_GENERATION = os.getenv("COST_PER_CUSTOM_GENERATION")
 COST_PER_REGULAR_GENERATION = os.getenv("COST_PER_REGULAR_GENERATION")
 REPLICATE_CLIENT = replicate.Client(api_token=os.getenv("REPLICATE_API_TOKEN"))
 
-# Настраиваем логирование, чтобы оно точно попало в journalctl
+# Configure logging to ensure it is captured by journalctl
 logging.basicConfig(level=logging.ERROR)
 
 
 def generate_image_url(prompt: str) -> str | None:
-    # 1. ОТЛАДКА: Проверяем, что ключ Replicate не None
+    # 1. DEBUG: Check if Replicate API token is not None
     if not os.getenv("REPLICATE_API_TOKEN"):
         logging.error("REPLICATE_API_TOKEN is missing!")
         return None
 
     try:
-        # 2. ОТЛАДКА: Сообщаем, что вызов пошел
+        # 2. DEBUG: Log that the call has been initiated
         logging.error(f"Calling Replicate with prompt: {prompt}")
 
         output = REPLICATE_CLIENT.run(
-            "aisha-ai-official/miaomiao-harem-illustrious-v1:d74eab7842eca403256b37c4276e0c19b83aa124cc5d102d15d9327a6d14ad02",
+            "black-forest-labs/flux-1.1-pro",
             input={
                 "prompt": prompt,
-                "vae": "MiaoMiao-Harem-Illustrious-v1",
-                "width": 768,
-                "height": 1024,
-                "model": "MiaoMiao-Harem-Illustrious-v1",
-                "negative_prompt": EXCLUDE,
+                "aspect_ratio": "1:1",
+                "output_format": "webp",
+                "output_quality": 80,
+                "safety_tolerance": 2,
+                "prompt_upsampling": True,
             },
         )
 
-        # 3. ОТЛАДКА: Печатаем весь ответ, чтобы увидеть его структуру
+        # 3. DEBUG: Print the raw response to see its structure
         logging.error(f"Replicate RAW Output received: {output}")
 
-        if output and len(output) > 0:
-            # Проверяем, что output[0] - это объект с атрибутом .url
-            # Если output — это просто список строк (URL), то код ниже не сработает
-            if hasattr(output[0], "url"):
-                return output[0].url
-            else:
-                # Если это просто список строк-URL:
-                return output[0]
+        if output.url:
+            return output.url
+        else:
+            raise ("no image url error")
 
     except Exception as e:
-        # 4. ЛОГИРОВАНИЕ: Печатаем полную трассировку ошибки
+        # 4. LOGGING: Print full error traceback
         logging.error(f"CRITICAL ERROR in generate_image_url: {e}", exc_info=True)
         return None
 
-    return None  # Возвращаем None, если что-то пошло не так
+    return None  # Return None if something went wrong
 
 
 def create_keyboard_from_list(items: list[str]) -> ReplyKeyboardMarkup:
@@ -74,15 +69,6 @@ def create_keyboard_from_list(items: list[str]) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(keyboard=rows, resize_keyboard=True)
 
 
-async def generate_image():
-    content = await replicate.run(
-        "aisha-ai-official/miaomiao-harem-illustrious-v1:d74eab7842eca403256b37c4276e0c19b83aa124cc5d102d15d9327a6d14ad02",
-        input={"prompt": "an iguana on the beach, pointillism"},
-    )
-    with open("output.png", "wb") as f:
-        f.write(content[0].read())
-
-
 def get_trial_image_caption(total: int) -> str:
     remaining = AMOUNT_OF_FREE_IMAGES - total
     if remaining == 0:
@@ -92,22 +78,22 @@ def get_trial_image_caption(total: int) -> str:
 
 
 def create_users_table(users: list[any]) -> str:
-    # Формируем отчет
+    # Generate report
     report_lines = ["📊 *User Statistics Report*", "---"]
 
-    # Заголовок таблицы для удобства чтения
+    # Table header for better readability
     report_lines.append("```")
     report_lines.append("ID                 | Pics | Gen | Open")
     report_lines.append("-------------------|------|-------|---------")
 
-    # Итерируемся по данным и форматируем каждую строку
+    # Iterate through data and format each row
     for user in users:
         user_id = str(user[0])
         total_pics = str(user[2])
         is_generating = "✅" if user[1] else "❌"
         is_unlocked = "✅" if user[3] else "🔒"
 
-        # Форматируем строку: ID (обрезаем до 12 символов, чтобы поместилось) | Pic | Gen | Unlock
+        # Format row: ID (trimmed to 10 chars) | Pic | Gen | Unlock
         report_lines.append(
             f"{user_id[:10].ljust(10)} | {total_pics.rjust(4)} | {is_generating.center(3)} | {is_unlocked.center(7)}"
         )
@@ -115,8 +101,8 @@ def create_users_table(users: list[any]) -> str:
     final_report = "\n".join(report_lines)
     report_lines.append("```")
     return final_report
-    # Отправляем отчет в чат, используя MarkdownV2 для моноширинного текста
-    # и избегая превышения лимита на длину сообщения (4096 символов).
+    # Send report to chat using MarkdownV2 for monospaced text
+    # while ensuring message length limit (4096 characters) is not exceeded
 
 
 # FUNCTION: calculate price for image

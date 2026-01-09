@@ -15,14 +15,6 @@ class GenerationsController:
             return res[0]
         return False
 
-    # @staticmethod
-    # def get_generation_by_id(id: int) -> list[any]:
-    #     sql_str = """SELECT * FROM generations WHERE id = ?"""
-    #     res = db.read(sql_str, (id,))
-    #     if res:
-    #         return res[0]
-    #     return False
-
     @staticmethod
     def create_generation(user_id: int, image_url: str, category: str) -> bool:
         data: tuple[any, ...] = (user_id, image_url, category, 0)

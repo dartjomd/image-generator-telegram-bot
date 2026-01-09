@@ -243,7 +243,7 @@ async def handle_admin_users(message: Message):
         await message.answer(final_report, parse_mode="html")
     except TelegramAPIError as e:
         print(e)
-        # Если отчет слишком длинный, отправляем упрощенную версию или ошибку
+        # If message is too long send notification
         await message.answer(
             f"✅ Report generated, but it was too long ({len(final_report)} chars) to send as one message."
         )
@@ -288,7 +288,7 @@ async def handle_categories(message: Message, state: FSMContext):
         await message.answer(text=OHTER_CATEGORY, reply_markup=kb.show_options)
         return
 
-    # 3. MESSAGE IS CUSTOM PROMPT BUTTON (Input is "Кастомный промпт")
+    # 3. MESSAGE IS CUSTOM PROMPT BUTTON
     if msg == CUSTOM_PROMPT_TITLE:
 
         # offer user to type custom prompt
@@ -298,7 +298,7 @@ async def handle_categories(message: Message, state: FSMContext):
         return
 
     # 4. MESSAGE IS A REGULAR CATEGORY BUTTON
-    # (Input is e.g., "Природа", resetting the state if necessary)
+    # (Input is e.g., "Nature", resetting the state if necessary)
     await _start_image_generation(
         message=message, prompt=CATEGORIES[msg], category=msg, state=state
     )

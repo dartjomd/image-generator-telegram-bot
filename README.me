@@ -1,0 +1,106 @@
+# AI Image Generation System (Telegram Bot)
+
+## Overview
+This project is a high-performance Telegram bot designed for photorealistic image generation using the Replicate AI API. It implements a scalable "Freemium" business model, allowing users to experience the service through a trial period before transitioning to a pay-per-generation model via Telegram Stars.
+
+The system is built on **Python 3.10+**, utilizing the **aiogram 3.x** framework for asynchronous communication and **SQLite3** for persistent data management.
+
+---
+
+## Technical Architecture
+
+### Core Components
+* **Bot Engine:** Asynchronous event handling using `aiogram`.
+* **AI Backend:** Integration with `Replicate` (Model: `flux-1.1-pro` by Black Forest Labs).
+* **Database Layer:** `SQLite3` for tracking user states, trial limits, and generation history.
+* **Payment Gateway:** Integrated Telegram Stars (Labeled Prices).
+
+### Database Schema
+The system uses a relational structure to ensure data integrity:
+* **Users Table:** Stores `user_id`, `is_generating` (concurrency lock), and registration timestamps.
+* **Generations Table:** Tracks every request, linking `user_id` to the generation status (`is_resolved`).
+* **Logic:** Trial availability is calculated dynamically by counting resolved generations against the `AMOUNT_OF_FREE_IMAGES` constant.
+
+---
+
+## Key Features
+
+### 1. Generation Pipeline
+The bot supports five distinct generation modes:
+* **Nature:** Presets for landscapes and environments.
+* **Cars:** Optimized for automotive photography.
+* **City:** Urban and architectural styles.
+* **Food:** High-contrast culinary photography.
+* **Custom Prompt:** Full user control over the AI input.
+
+### 2. State & Concurrency Control
+To prevent API abuse and race conditions, the bot implements a "Single Task Rule." A user cannot start a new generation until the previous one is either resolved or discarded. This is managed via the `is_generating` flag in the database.
+
+### 3. Monetization Flow
+1.  **Trial Check:** System queries the database to count total successful generations for the user.
+2.  **Invoice Issuance:** If trials are exhausted, a Telegram Invoice is generated using `send_invoice`.
+3.  **Payment Verification:** The `PreCheckoutQuery` handler validates the transaction.
+4.  **Execution:** Upon `SuccessfulPayment`, the Replicate API is called, and the final 8K image is delivered.
+
+---
+
+## Installation & Setup
+
+### Prerequisites
+* Python 3.10 or higher
+* Replicate API Token
+* Telegram Bot Token (via @BotFather)
+
+### Deployment Steps
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/dartjomd/image-generator-telegram-bot.git](https://github.com/dartjomd/image-generator-telegram-bot.git)
+    cd repo
+    ```
+
+2.  **Environment Configuration:**
+    Create a `.env` file in the root directory:
+    ```env
+    BOT_TOKEN=your_bot_token
+    REPLICATE_API_TOKEN=your_replicate_token
+    AMOUNT_OF_FREE_IMAGES=3
+    COST_PER_REGULAR_GENERATION=1
+    COST_PER_CUSTOM_GENERATION=2
+    SUPPORT_EMAIL=support@example.com
+    ```
+
+3.  **Dependency Installation:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4.  **Database Initialization:**
+    The bot automatically creates necessary tables on the first launch if they do not exist.
+
+5.  **Running the Application:**
+    ```bash
+    python main.py
+    ```
+
+---
+
+## API & Model Configuration
+The system uses the **Flux 1.1 Pro** model with the following parameters:
+* **Aspect Ratio:** 1:1 (Default)
+* **Output Format:** WebP (Optimized for Telegram)
+* **Safety Tolerance:** Level 2
+* **Prompt Upsampling:** Enabled (to enhance user input automatically)
+
+---
+
+## Administrative Features
+The bot includes a built-in reporting system for administrators:
+* **User Statistics:** Generates a Markdown-formatted table showing User IDs, total images generated, current activity status, and payment history.
+* **Error Logging:** Critical errors (API timeouts, payment failures) are logged via `logging` and can be inspected via `journalctl` if deployed as a systemd service.
+
+---
+
+## Security Considerations
+* **Credential Isolation:** All API keys are stored in environment variables and excluded from version control via `.gitignore`.
+* **Input Sanitization:** Custom prompts are processed to ensure compatibility with the Replicate API.
+* **Refund Logic:** A dedicated command and support flow handle cases where AI generation might fail after payment.
